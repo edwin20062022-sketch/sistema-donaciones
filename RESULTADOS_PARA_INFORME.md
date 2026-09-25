@@ -14,8 +14,11 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 
 * workflow: `.github/workflows/ci-cd.yml`
 * jobs configurados: tests, build, quality y deploy-staging
-* resultado de ejecución: PENDIENTE DE AUTENTICACIÓN EN GITHUB; no existe remoto configurado todavía
-* artifacts generados: `pytest-reports` cuando el workflow se ejecute
+* repositorio: `https://github.com/edwin20062022-sketch/sistema-donaciones`
+* ejecución verificada: [CI/CD #36094031338](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338), concluida correctamente
+* resultado: Tests and coverage (17 s), Docker build (22 s) y Sonar quality analysis (22 s) correctos; Deploy staging se omitió en esa primera corrida porque todavía no existía el secreto de Render
+* artifacts generados: `pytest-reports`
+* configuración actual: `RENDER_DEPLOY_HOOK_URL` está registrado como secreto del repositorio; los pushes posteriores a `main` ejecutan el Deploy Hook
 
 ## C. Docker
 
@@ -66,12 +69,12 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 
 ## F. Deployment
 
-* URL staging: PENDIENTE DE CREDENCIALES Y CONFIGURACIÓN EXTERNA
-* proveedor: Render preparado mediante `RENDER_DEPLOY_HOOK_URL`
-* fecha: PENDIENTE DE EJECUCIÓN REAL
-* estado: PENDIENTE DE EJECUCIÓN REAL
-* evidencia: PENDIENTE DE EJECUCIÓN REAL
-* pasos pendientes: crear servicio, configurar variables y agregar el secreto en GitHub
+* URL staging: `https://sistema-donaciones-pgju.onrender.com`
+* proveedor: Render, Web Service Docker, plan Free
+* servicio: `srv-daqvhjs9v7es738uag5g`
+* estado: Live; Health Check Path configurado como `/health`
+* configuración: `DATABASE_URL=sqlite:///./donaciones.db` y clave JWT privada definidas en Render; Deploy Hook privado guardado en GitHub como `RENDER_DEPLOY_HOOK_URL`
+* evidencia: `/health`, `/docs` y `/openapi.json` respondieron `200 OK`
 
 ## G. Evidencias para insertar en Word
 
@@ -84,11 +87,11 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 7. Reporte HTML/JSON de ZAP.
 8. Vista Overview de SonarQube/SonarCloud.
 9. Vista de cobertura, code smells y deuda técnica en SonarQube/SonarCloud.
-10. URL y estado del staging, si se configura.
+10. URL y estado Live del staging en Render.
 
 ## Desviaciones y decisiones técnicas
 
 * El administrador se crea mediante `scripts/create_admin.py` con variables de entorno; el registro público nunca acepta el rol.
-* ZAP y SonarQube se ejecutaron localmente con evidencias versionadas; GitHub Actions y staging continúan pendientes de autenticación/configuración externa.
+* ZAP y SonarQube se ejecutaron localmente con evidencias versionadas. GitHub Actions se ejecutó correctamente y el staging de Render quedó publicado y comprobado.
 * La API se inició localmente y respondió `200 OK` en `/health` y `/openapi.json`.
 * El documento Word conserva campos pendientes; este repositorio es la fuente de los resultados de ejecución que deben trasladarse al informe.
