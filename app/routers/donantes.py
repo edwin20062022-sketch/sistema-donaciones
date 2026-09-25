@@ -11,6 +11,7 @@ from ..schemas import DonanteCreate, DonanteResponse, DonanteUpdate
 
 
 router = APIRouter(prefix="/donantes", tags=["Donantes"])
+DONANTE_NO_ENCONTRADO = "Donante no encontrado"
 
 
 @router.post("", response_model=DonanteResponse, status_code=status.HTTP_201_CREATED)
@@ -42,7 +43,7 @@ def get_donante(
 ) -> Donante:
     donante = db.get(Donante, donante_id)
     if donante is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Donante no encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=DONANTE_NO_ENCONTRADO)
     return donante
 
 
@@ -55,7 +56,7 @@ def update_donante(
 ) -> Donante:
     donante = db.get(Donante, donante_id)
     if donante is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Donante no encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=DONANTE_NO_ENCONTRADO)
     for field, value in payload.model_dump().items():
         setattr(donante, field, value)
     db.commit()
@@ -71,7 +72,6 @@ def delete_donante(
 ) -> None:
     donante = db.get(Donante, donante_id)
     if donante is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Donante no encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=DONANTE_NO_ENCONTRADO)
     db.delete(donante)
     db.commit()
-

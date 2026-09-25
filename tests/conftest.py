@@ -10,7 +10,7 @@ from app.database import Base, get_db
 from app.main import app
 
 
-@pytest.fixture()
+@pytest.fixture
 def client():
     engine = create_engine(
         "sqlite://",
@@ -34,14 +34,14 @@ def client():
     Base.metadata.drop_all(bind=engine)
 
 
-@pytest.fixture()
+@pytest.fixture
 def user_token(client: TestClient) -> str:
     response = client.post("/auth/register", json={"nombre": "Usuario", "correo": "user@example.com", "password": "Password1!"})
     assert response.status_code == 201
     return client.post("/auth/login", json={"correo": "user@example.com", "password": "Password1!"}).json()["access_token"]
 
 
-@pytest.fixture()
+@pytest.fixture
 def admin_token(client: TestClient) -> str:
     from app.database import get_db
     from app.models import User
@@ -54,7 +54,7 @@ def admin_token(client: TestClient) -> str:
     return client.post("/auth/login", json={"correo": "admin@example.com", "password": "AdminPass1!"}).json()["access_token"]
 
 
-@pytest.fixture()
+@pytest.fixture
 def donor_payload():
     return {
         "nombre": "Banco de Alimentos",
@@ -63,4 +63,3 @@ def donor_payload():
         "tipo": "organizacion",
         "recurso": "alimentos",
     }
-
