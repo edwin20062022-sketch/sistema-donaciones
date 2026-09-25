@@ -110,7 +110,9 @@ Verifica la aplicación en [http://localhost:8000/docs](http://localhost:8000/do
 
 El repositorio está publicado en [GitHub](https://github.com/edwin20062022-sketch/sistema-donaciones). `.github/workflows/ci-cd.yml` ejecuta pruebas con umbral de 80 %, guarda el artifact de cobertura y construye Docker. El job de calidad se activa en push cuando existen `SONAR_TOKEN` y `SONAR_HOST_URL`; el despliegue se activa en push a `main` cuando existe `RENDER_DEPLOY_HOOK_URL`.
 
-La primera ejecución verificada de [CI/CD](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338) finalizó correctamente: pruebas y cobertura, build de Docker y análisis de calidad completaron. El escaneo externo de Sonar se omitió porque no se configuraron secretos de SonarCloud; el análisis local de SonarQube sí está documentado más abajo. El secreto de Render quedó configurado después de esa ejecución para que los siguientes pushes a `main` disparen el Deploy Hook.
+La primera ejecución verificada de [CI/CD](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338) finalizó correctamente: pruebas y cobertura, build de Docker y análisis de calidad completaron. El escaneo externo de Sonar se omitió porque no se configuraron secretos de SonarCloud; el análisis local de SonarQube sí está documentado más abajo.
+
+La siguiente ejecución, [CI/CD #36095436798](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095436798), concluyó en éxito con los cuatro jobs: pruebas y cobertura, Docker, calidad y `Deploy staging through Render hook`. El paso `Trigger Render deploy hook` se ejecutó correctamente; así se validó el despliegue automático desde un push a `main` sin revelar el secreto.
 
 ## SonarQube/SonarCloud
 
@@ -134,7 +136,7 @@ El script usa ZAP API Scan contra `/openapi.json` y guarda sus informes HTML/JSO
 
 El servicio de staging está publicado en [Render](https://sistema-donaciones-pgju.onrender.com) como Web Service Docker en el plan Free. Usa `DATABASE_URL=sqlite:///./donaciones.db`, una clave JWT privada configurada en Render y `/health` como Health Check Path. El Deploy Hook está almacenado de forma privada en el secreto de GitHub `RENDER_DEPLOY_HOOK_URL`; su valor no se versiona ni se muestra en el repositorio.
 
-Se comprobaron respuestas `200 OK` en [health](https://sistema-donaciones-pgju.onrender.com/health), [docs](https://sistema-donaciones-pgju.onrender.com/docs) y [openapi](https://sistema-donaciones-pgju.onrender.com/openapi.json). Tras un push a `main`, GitHub Actions ejecuta el hook de despliegue. Como es un servicio Free, Render puede requerir un breve arranque después de un periodo de inactividad.
+Se comprobaron respuestas `200 OK` en [health](https://sistema-donaciones-pgju.onrender.com/health), [docs](https://sistema-donaciones-pgju.onrender.com/docs) y [openapi](https://sistema-donaciones-pgju.onrender.com/openapi.json). La ejecución CI/CD #36095436798 confirmó que un push a `main` invoca correctamente el hook de despliegue. Como es un servicio Free, Render puede requerir un breve arranque después de un periodo de inactividad.
 
 ## Evidencias y limitaciones
 

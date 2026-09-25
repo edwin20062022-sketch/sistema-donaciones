@@ -15,8 +15,9 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 * workflow: `.github/workflows/ci-cd.yml`
 * jobs configurados: tests, build, quality y deploy-staging
 * repositorio: `https://github.com/edwin20062022-sketch/sistema-donaciones`
-* ejecución verificada: [CI/CD #36094031338](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338), concluida correctamente
-* resultado: Tests and coverage (17 s), Docker build (22 s) y Sonar quality analysis (22 s) correctos; Deploy staging se omitió en esa primera corrida porque todavía no existía el secreto de Render
+* ejecución inicial: [CI/CD #36094031338](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338), concluida correctamente; Deploy staging se omitió porque todavía no existía el secreto de Render
+* ejecución de despliegue: [CI/CD #36095436798](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095436798), concluida correctamente con los cuatro jobs
+* resultado final: Tests and coverage (20 s), Docker build (22 s), Sonar quality analysis (18 s) y Deploy staging through Render hook correctos; el paso `Trigger Render deploy hook` se ejecutó correctamente
 * artifacts generados: `pytest-reports`
 * configuración actual: `RENDER_DEPLOY_HOOK_URL` está registrado como secreto del repositorio; los pushes posteriores a `main` ejecutan el Deploy Hook
 
@@ -74,7 +75,7 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 * servicio: `srv-daqvhjs9v7es738uag5g`
 * estado: Live; Health Check Path configurado como `/health`
 * configuración: `DATABASE_URL=sqlite:///./donaciones.db` y clave JWT privada definidas en Render; Deploy Hook privado guardado en GitHub como `RENDER_DEPLOY_HOOK_URL`
-* evidencia: `/health`, `/docs` y `/openapi.json` respondieron `200 OK`
+* evidencia: `/health`, `/docs` y `/openapi.json` respondieron `200 OK`; CI/CD #36095436798 invocó el Deploy Hook correctamente
 
 ## G. Evidencias para insertar en Word
 
