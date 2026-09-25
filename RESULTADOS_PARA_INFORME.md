@@ -27,13 +27,14 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 * build exitoso: sí
 * comando utilizado: `docker build -t sistema-donaciones:latest .`
 * imagen: `sistema-donaciones:latest`
-* tamaño de imagen: 66,037,597 bytes
+* tamaño de imagen: 66,037,843 bytes
 * container iniciado: sí
 * nombre del container: `sistema-donaciones`
 * puerto: `8000:8000`
 * `/health`: accesible, `200 OK`, cuerpo `{"status":"ok"}`
 * `/docs`: accesible, `200 OK`
 * `/openapi.json`: accesible, `200 OK`
+* cabeceras verificadas: `X-Content-Type-Options: nosniff` y `Cross-Origin-Resource-Policy: same-origin`
 * errores encontrados: el daemon inicialmente no respondía; Docker Desktop fallaba al iniciar por sockets runtime corruptos y por el componente Model Runner/Inference.
 * correcciones realizadas: se regeneraron de forma reversible las carpetas runtime afectadas, se desactivó Model Runner con `docker desktop disable model-runner` y se reinició Docker Desktop con WSL 2.
 
