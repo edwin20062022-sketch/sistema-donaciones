@@ -1,98 +1,90 @@
-# Resultados para el informe
+# Resultados verificables para el informe final
 
-Este archivo concentra datos verificables para completar el Word adjunto. Las cifras se actualizan únicamente después de ejecutar cada herramienta.
+Este archivo es la fuente de verdad para el informe y la entrega. Los valores proceden de ejecuciones locales, reportes versionados y servicios publicados; no contiene secretos.
 
-## A. Pruebas
+## A. Aplicación
 
-* número de pruebas: 12
-* pruebas exitosas: 12
-* pruebas fallidas: 0
-* cobertura global real: 97.36 %
-* archivos con menor cobertura: `app/database.py` con 73 %; el resto de los módulos quedó por encima de 90 %.
+* tecnología: Python 3.12, FastAPI, SQLAlchemy, SQLite, Pydantic, JWT y Argon2.
+* endpoints: `/health`, `/docs`, `/openapi.json`, `/auth/register`, `/auth/login`, `/auth/me` y CRUD de `/donantes`.
+* autenticación: JWT con expiración; las contraseñas se almacenan con Argon2.
+* roles: `user` y `admin`; el listado, actualización y eliminación administrativa se protegen por rol.
+* base de datos: SQLite mediante SQLAlchemy. Las pruebas usan una base aislada.
 
-## B. CI/CD
+## B. Pruebas
 
-* workflow: `.github/workflows/ci-cd.yml`
-* jobs configurados: tests, build, quality y deploy-staging
-* repositorio: `https://github.com/edwin20062022-sketch/sistema-donaciones`
-* ejecución inicial: [CI/CD #36094031338](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338), concluida correctamente; Deploy staging se omitió porque todavía no existía el secreto de Render
-* ejecución de despliegue: [CI/CD #36095436798](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095436798), concluida correctamente con los cuatro jobs
-* resultado final: Tests and coverage (20 s), Docker build (22 s), Sonar quality analysis (18 s) y Deploy staging through Render hook correctos; el paso `Trigger Render deploy hook` se ejecutó correctamente
-* artifacts generados: `pytest-reports`
-* configuración actual: `RENDER_DEPLOY_HOOK_URL` está registrado como secreto del repositorio; los pushes posteriores a `main` ejecutan el Deploy Hook
+* comando final: `python -m pytest tests -p no:cacheprovider --cov=app --cov-report=term-missing --cov-report=html:reports/pytest/htmlcov --cov-report=xml:reports/pytest/coverage.xml --cov-fail-under=80`.
+* ejecución final: 12 pruebas ejecutadas, 12 exitosas y 0 fallidas.
+* cobertura global real: 97.36 % (221 de 227 líneas cubiertas).
+* menor cobertura: `app/database.py`, 73 %; contiene inicialización de base de datos no recorrida en todas las ramas por la suite.
+* evidencia: `reports/pytest/coverage.xml`, `reports/pytest/htmlcov/` y `evidencias/01_pytest/01_pytest_cobertura.png`.
 
 ## C. Docker
 
-* Docker Desktop instalado: sí, versión 4.59.0 (217644)
-* backend utilizado: Docker Desktop con contenedores Linux sobre WSL 2
-* versión WSL: 2.3.26.0; kernel 5.15.167.4-microsoft-standard-WSL2
-* `docker version`: cliente 29.2.0; Engine 29.2.0; servidor Docker Desktop 4.59.0; Linux/amd64
-* prueba `hello-world`: exitosa
-* build exitoso: sí
-* comando utilizado: `docker build -t sistema-donaciones:latest .`
-* imagen: `sistema-donaciones:latest`
-* tamaño de imagen: 66,037,843 bytes
-* container iniciado: sí
-* nombre del container: `sistema-donaciones`
-* puerto: `8000:8000`
-* `/health`: accesible, `200 OK`, cuerpo `{"status":"ok"}`
-* `/docs`: accesible, `200 OK`
-* `/openapi.json`: accesible, `200 OK`
-* cabeceras verificadas: `X-Content-Type-Options: nosniff` y `Cross-Origin-Resource-Policy: same-origin`
-* errores encontrados: el daemon inicialmente no respondía; Docker Desktop fallaba al iniciar por sockets runtime corruptos y por el componente Model Runner/Inference.
-* correcciones realizadas: se regeneraron de forma reversible las carpetas runtime afectadas, se desactivó Model Runner con `docker desktop disable model-runner` y se reinició Docker Desktop con WSL 2.
+* Docker Desktop: 4.59.0 (217644), Engine 29.2.0, backend Linux `overlayfs` sobre WSL 2 (kernel 5.15.167.4-microsoft-standard-WSL2).
+* `docker run --rm hello-world`: exitoso.
+* build final: `docker build -t sistema-donaciones:latest .`, exitoso.
+* imagen: `sistema-donaciones:latest`, 66,037,843 bytes.
+* contenedor activo: `sistema-donaciones`, puerto `8000:8000`.
+* endpoints locales verificados: `/health`, `/docs` y `/openapi.json`, todos con `200 OK`.
+* cabeceras verificadas: `X-Content-Type-Options: nosniff` y `Cross-Origin-Resource-Policy: same-origin`.
 
 ## D. OWASP ZAP
 
-* fecha/ejecución: 24 de septiembre de 2026, contra el contenedor local activo
-* tipo de escaneo: ZAP API Scan contra `http://host.docker.internal:8000/openapi.json`
-* informe inicial: 0 High, 0 Medium, 2 tipos de alerta Low (4 ocurrencias) y 3 tipos Informational (38 ocurrencias)
-* hallazgos Low iniciales: ausencia de `X-Content-Type-Options` y `Cross-Origin-Resource-Policy`, ambos en `/health` y `/openapi.json`
-* correcciones realizadas: middleware que establece `X-Content-Type-Options: nosniff` y `Cross-Origin-Resource-Policy: same-origin`; prueba automatizada de dichas cabeceras
-* informe final: 0 High, 0 Medium, 0 Low y 3 tipos Informational (38 ocurrencias)
-* informativos finales: 31 respuestas 4xx provocadas por el escáner, 5 respuestas no almacenables y 2 respuestas almacenables; sin alertas abiertas de severidad Low o superior
-* evidencia: `reports/zap/initial/` y `reports/zap/final/`
+* ejecución: 24 de septiembre de 2026; ZAP API Scan contra `http://host.docker.internal:8000/openapi.json`.
+* informe inicial: 0 High, 0 Medium, 2 tipos Low (4 ocurrencias) y 3 tipos Informational (38 ocurrencias).
+* hallazgos Low iniciales: ausencia de `X-Content-Type-Options` y `Cross-Origin-Resource-Policy` en `/health` y `/openapi.json`.
+* corrección: middleware que añade `nosniff` y `same-origin`, con prueba automatizada.
+* informe final: 0 High, 0 Medium, 0 Low y 3 tipos Informational (38 ocurrencias).
+* informativos finales: 31 respuestas 4xx provocadas por el escáner, 5 respuestas no almacenables y 2 respuestas almacenables; no hay alertas abiertas Low o superiores.
+* evidencia: `reports/zap/initial/`, `reports/zap/final/` y `evidencias/03_zap/03_zap_resultado_final.png`.
 
-## E. Sonar
+## E. SonarQube
 
-* ejecución local: SonarQube Community Build 26.9.0.129388 y SonarScanner CLI 8.1.0.6389
-* Bugs: 0
-* Vulnerabilities: 0
-* Security Hotspots: 0
-* Code Smells: 0
-* Coverage: 97.4 % (227 líneas a cubrir; 6 sin cubrir)
-* Duplicated Lines: 0.0 %
-* Technical Debt: 0 minutos
-* Maintainability: A (rating 1.0)
-* Reliability y Security: A (rating 1.0)
-* incidencias abiertas: 0; las 7 incidencias iniciales de code smell quedaron `CLOSED/FIXED`
-* evidencia: `reports/sonar/measures.json`, `reports/sonar/issues.json` y `reports/sonar/open-issues.json`
+* ejecución local: SonarQube Community Build 26.9.0.129388 y SonarScanner CLI 8.1.0.6389.
+* Bugs: 0; Vulnerabilities: 0; Security Hotspots: 0; Code Smells: 0.
+* Coverage: 97.4 % (227 líneas a cubrir; 6 sin cubrir).
+* Duplicated Lines: 0.0 %; Technical Debt: 0 minutos.
+* Maintainability, Reliability y Security: A (rating 1.0).
+* incidencias abiertas: 0; 7 incidencias iniciales de code smell quedaron `CLOSED/FIXED`.
+* evidencia: `reports/sonar/measures.json`, `reports/sonar/issues.json`, `reports/sonar/open-issues.json` y `evidencias/04_sonar/04_sonar_metricas.png`.
 
-## F. Deployment
+## F. GitHub y CI/CD
 
-* URL staging: `https://sistema-donaciones-pgju.onrender.com`
-* proveedor: Render, Web Service Docker, plan Free
-* servicio: `srv-daqvhjs9v7es738uag5g`
-* estado: Live; Health Check Path configurado como `/health`
-* configuración: `DATABASE_URL=sqlite:///./donaciones.db` y clave JWT privada definidas en Render; Deploy Hook privado guardado en GitHub como `RENDER_DEPLOY_HOOK_URL`
-* evidencia: `/health`, `/docs` y `/openapi.json` respondieron `200 OK`; CI/CD #36095436798 invocó el Deploy Hook correctamente
+* repositorio: `https://github.com/edwin20062022-sketch/sistema-donaciones`, rama `main`.
+* workflow: `.github/workflows/ci-cd.yml`; jobs `Tests and coverage`, `Docker build`, `Sonar quality analysis` y `Deploy staging through Render hook`.
+* ejecución de despliegue verificada: [CI/CD #36095436798](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095436798), concluida correctamente; `Trigger Render deploy hook` se ejecutó correctamente.
+* última ejecución verificada: [CI/CD #36095583947](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095583947), concluida correctamente.
+* calidad en CI: el escaneo externo de Sonar se condiciona a `SONAR_TOKEN` y `SONAR_HOST_URL`, que no se configuraron; el análisis SonarQube local de la sección E sí se ejecutó y conserva sus métricas reales.
+* secreto de despliegue: `RENDER_DEPLOY_HOOK_URL` está configurado en GitHub y no se incluye en el repositorio.
 
-## G. Evidencias para insertar en Word
+## G. Staging
 
-1. Swagger mostrando un registro y login exitosos.
-2. `/auth/me` mostrando el rol sin exponer el hash.
-3. Respuesta `403 Forbidden` al listar donantes con usuario normal.
-4. Terminal de Pytest con cobertura real.
-5. Ejecución de GitHub Actions en verde.
-6. Build o ejecución de la imagen Docker.
-7. Reporte HTML/JSON de ZAP.
-8. Vista Overview de SonarQube/SonarCloud.
-9. Vista de cobertura, code smells y deuda técnica en SonarQube/SonarCloud.
-10. URL y estado Live del staging en Render.
+* proveedor: Render, Web Service Docker, plan Free; servicio `srv-daqvhjs9v7es738uag5g`.
+* URL: `https://sistema-donaciones-pgju.onrender.com`.
+* estado verificado: Live; Health Check Path `/health`.
+* endpoints verificados: `/health`, `/docs` y `/openapi.json`, todos con `200 OK`.
+* despliegue automático: demostrado por CI/CD #36095436798 mediante el Deploy Hook de Render.
+* evidencia: `evidencias/06_staging/06_staging_docs.png`.
 
-## Desviaciones y decisiones técnicas
+## H. Planificado versus ejecutado
 
-* El administrador se crea mediante `scripts/create_admin.py` con variables de entorno; el registro público nunca acepta el rol.
-* ZAP y SonarQube se ejecutaron localmente con evidencias versionadas. GitHub Actions se ejecutó correctamente y el staging de Render quedó publicado y comprobado.
-* La API se inició localmente y respondió `200 OK` en `/health` y `/openapi.json`.
-* El documento Word conserva campos pendientes; este repositorio es la fuente de los resultados de ejecución que deben trasladarse al informe.
+| Actividad planificada | Resultado ejecutado | Desviación técnica | Causa |
+| --- | --- | --- | --- |
+| Implementación segura, JWT, roles y CRUD | Completado y cubierto por 12 pruebas | Sin tiempo cuantificable | No se registraron tiempos por actividad. |
+| Cobertura mínima de 80 % | 97.36 % | Meta superada | Pruebas de flujos correctos y de error. |
+| CI/CD, build y deploy | Workflow exitoso y hook de Render ejecutado | Sin tiempo cuantificable | La duración se registra por job, no por fase académica. |
+| OWASP ZAP y correcciones | Reescaneo final sin alertas Low o superiores | Sin tiempo cuantificable | Se corrigieron cabeceras detectadas en el primer escaneo. |
+| SonarQube y cierre | Métricas finales sin incidencias abiertas | Sin tiempo cuantificable | Análisis local conservado en reportes JSON. |
+
+## I. Lecciones aprendidas
+
+* La cobertura debe conservar rutas portables para que Pytest y Sonar consuman el mismo XML en local y CI.
+* Una cobertura alta no sustituye la evaluación de la superficie HTTP: ZAP detectó cabeceras que las pruebas funcionales no habían señalado.
+* Las variables privadas del despliegue deben permanecer en Render y GitHub Secrets; el Deploy Hook se validó sin versionar su URL.
+* El plan Free de Render puede entrar en reposo; `/health` permitió comprobar el servicio tras su reactivación.
+
+## J. Evidencias y limitaciones de captura
+
+* disponibles: cobertura Pytest, reporte final ZAP, exportación de métricas Sonar y Swagger del staging en `evidencias/`.
+* reportes completos: `reports/pytest/`, `reports/zap/` y `reports/sonar/`.
+* capturas visuales manuales pendientes: `CAPTURAS_PENDIENTES.md` documenta únicamente las que requieren una sesión autenticada de GitHub o SonarQube, o una interacción manual de Swagger.

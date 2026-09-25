@@ -112,7 +112,7 @@ El repositorio está publicado en [GitHub](https://github.com/edwin20062022-sket
 
 La primera ejecución verificada de [CI/CD](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36094031338) finalizó correctamente: pruebas y cobertura, build de Docker y análisis de calidad completaron. El escaneo externo de Sonar se omitió porque no se configuraron secretos de SonarCloud; el análisis local de SonarQube sí está documentado más abajo.
 
-La siguiente ejecución, [CI/CD #36095436798](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095436798), concluyó en éxito con los cuatro jobs: pruebas y cobertura, Docker, calidad y `Deploy staging through Render hook`. El paso `Trigger Render deploy hook` se ejecutó correctamente; así se validó el despliegue automático desde un push a `main` sin revelar el secreto.
+La siguiente ejecución, [CI/CD #36095436798](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095436798), concluyó en éxito con los cuatro jobs: pruebas y cobertura, Docker, calidad y `Deploy staging through Render hook`. El paso `Trigger Render deploy hook` se ejecutó correctamente; así se validó el despliegue automático desde un push a `main` sin revelar el secreto. La última ejecución verificada, [CI/CD #36095583947](https://github.com/edwin20062022-sketch/sistema-donaciones/actions/runs/36095583947), también finalizó correctamente.
 
 ## SonarQube/SonarCloud
 
@@ -128,7 +128,7 @@ Con la API ejecutándose y Docker disponible:
 bash scripts/run_zap.sh http://localhost:8000
 ```
 
-En PowerShell puedes usar `.scriptsun_zap.ps1 http://host.docker.internal:8000`.
+En PowerShell puedes usar `./scripts/run_zap.ps1 http://host.docker.internal:8000`.
 
 El script usa ZAP API Scan contra `/openapi.json` y guarda sus informes HTML/JSON. La ejecución inicial registró dos tipos de alerta Low: faltaban `X-Content-Type-Options` y `Cross-Origin-Resource-Policy`. La API ahora establece `nosniff` y `same-origin` respectivamente; el reescaneo final registró 0 High, 0 Medium y 0 Low. Los informes comparativos están en `reports/zap/initial/` y `reports/zap/final/`.
 
@@ -140,4 +140,4 @@ Se comprobaron respuestas `200 OK` en [health](https://sistema-donaciones-pgju.o
 
 ## Evidencias y limitaciones
 
-`RESULTADOS_PARA_INFORME.md` enumera exactamente las capturas requeridas y distingue resultados reales de tareas pendientes. Las evidencias de Sonar, ZAP, GitHub Actions y Render se han validado y están referenciadas sin incluir credenciales.
+`RESULTADOS_PARA_INFORME.md` es la fuente de verdad de los resultados finales. `AUDITORIA_FINAL.md` contrasta el resultado con la rúbrica y `CAPTURAS_PENDIENTES.md` indica únicamente las evidencias visuales que requieren una sesión autenticada o interacción manual. Las capturas reales disponibles se guardan en `evidencias/`, sin incluir credenciales.

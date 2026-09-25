@@ -1,0 +1,17 @@
+Evidencia Docker obtenida durante la validación final.
+
+docker version:
+29.2.0|29.2.0
+
+docker ps:
+NAMES                IMAGE                 STATUS             PORTS
+sistema-donaciones   ca9a4e2fbc5b          Up About an hour   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+sonarqube            sonarqube:community   Up 2 hours         0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp
+
+image size:
+66037843 bytes
+
+endpoints:
+http://127.0.0.1:8000/health 200
+http://127.0.0.1:8000/docs 200
+http://127.0.0.1:8000/openapi.json 200
