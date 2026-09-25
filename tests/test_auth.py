@@ -54,3 +54,10 @@ def test_expired_token_is_rejected(client):
     expired = create_access_token(user_id=1, role="user", expires_delta=timedelta(seconds=-1))
     assert client.get("/auth/me", headers={"Authorization": f"Bearer {expired}"}).status_code == 401
 
+
+def test_health_exposes_security_headers(client):
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    assert response.headers["x-content-type-options"] == "nosniff"
+    assert response.headers["cross-origin-resource-policy"] == "same-origin"
