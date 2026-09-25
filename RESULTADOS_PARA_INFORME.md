@@ -4,17 +4,17 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 
 ## A. Pruebas
 
-* número de pruebas: 11
-* pruebas exitosas: 11
+* número de pruebas: 12
+* pruebas exitosas: 12
 * pruebas fallidas: 0
-* cobertura global real: 96.76 %
+* cobertura global real: 97.36 %
 * archivos con menor cobertura: `app/database.py` con 73 %; el resto de los módulos quedó por encima de 90 %.
 
 ## B. CI/CD
 
 * workflow: `.github/workflows/ci-cd.yml`
 * jobs configurados: tests, build, quality y deploy-staging
-* resultado de ejecución: PENDIENTE DE EJECUCIÓN REAL EN GITHUB ACTIONS
+* resultado de ejecución: PENDIENTE DE AUTENTICACIÓN EN GITHUB; no existe remoto configurado todavía
 * artifacts generados: `pytest-reports` cuando el workflow se ejecute
 
 ## C. Docker
@@ -39,26 +39,29 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 
 ## D. OWASP ZAP
 
-* fecha/ejecución: PENDIENTE DE EJECUCIÓN REAL
-* tipo de escaneo: ZAP API Scan contra `/openapi.json`
-* alertas High: PENDIENTE DE EJECUCIÓN REAL
-* alertas Medium: PENDIENTE DE EJECUCIÓN REAL
-* alertas Low: PENDIENTE DE EJECUCIÓN REAL
-* alertas Informational: PENDIENTE DE EJECUCIÓN REAL
-* hallazgos principales: PENDIENTE DE EJECUCIÓN REAL
-* correcciones realizadas: PENDIENTE DE EJECUCIÓN REAL
-* resultado después de correcciones: PENDIENTE DE EJECUCIÓN REAL
+* fecha/ejecución: 24 de septiembre de 2026, contra el contenedor local activo
+* tipo de escaneo: ZAP API Scan contra `http://host.docker.internal:8000/openapi.json`
+* informe inicial: 0 High, 0 Medium, 2 tipos de alerta Low (4 ocurrencias) y 3 tipos Informational (38 ocurrencias)
+* hallazgos Low iniciales: ausencia de `X-Content-Type-Options` y `Cross-Origin-Resource-Policy`, ambos en `/health` y `/openapi.json`
+* correcciones realizadas: middleware que establece `X-Content-Type-Options: nosniff` y `Cross-Origin-Resource-Policy: same-origin`; prueba automatizada de dichas cabeceras
+* informe final: 0 High, 0 Medium, 0 Low y 3 tipos Informational (38 ocurrencias)
+* informativos finales: 31 respuestas 4xx provocadas por el escáner, 5 respuestas no almacenables y 2 respuestas almacenables; sin alertas abiertas de severidad Low o superior
+* evidencia: `reports/zap/initial/` y `reports/zap/final/`
 
 ## E. Sonar
 
-* Bugs: PENDIENTE DE EJECUCIÓN REAL
-* Vulnerabilities: PENDIENTE DE EJECUCIÓN REAL
-* Security Hotspots: PENDIENTE DE EJECUCIÓN REAL
-* Code Smells: PENDIENTE DE EJECUCIÓN REAL
-* Coverage: PENDIENTE DE EJECUCIÓN REAL
-* Duplicated Lines: PENDIENTE DE EJECUCIÓN REAL
-* Technical Debt: PENDIENTE DE EJECUCIÓN REAL
-* Maintainability: PENDIENTE DE EJECUCIÓN REAL
+* ejecución local: SonarQube Community Build 26.9.0.129388 y SonarScanner CLI 8.1.0.6389
+* Bugs: 0
+* Vulnerabilities: 0
+* Security Hotspots: 0
+* Code Smells: 0
+* Coverage: 97.4 % (227 líneas a cubrir; 6 sin cubrir)
+* Duplicated Lines: 0.0 %
+* Technical Debt: 0 minutos
+* Maintainability: A (rating 1.0)
+* Reliability y Security: A (rating 1.0)
+* incidencias abiertas: 0; las 7 incidencias iniciales de code smell quedaron `CLOSED/FIXED`
+* evidencia: `reports/sonar/measures.json`, `reports/sonar/issues.json` y `reports/sonar/open-issues.json`
 
 ## F. Deployment
 
@@ -85,6 +88,6 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 ## Desviaciones y decisiones técnicas
 
 * El administrador se crea mediante `scripts/create_admin.py` con variables de entorno; el registro público nunca acepta el rol.
-* ZAP, Sonar y staging dependen de herramientas o credenciales externas y no se reportan como ejecutados hasta contar con evidencia real.
+* ZAP y SonarQube se ejecutaron localmente con evidencias versionadas; GitHub Actions y staging continúan pendientes de autenticación/configuración externa.
 * La API se inició localmente y respondió `200 OK` en `/health` y `/openapi.json`.
 * El documento Word conserva campos pendientes; este repositorio es la fuente de los resultados de ejecución que deben trasladarse al informe.

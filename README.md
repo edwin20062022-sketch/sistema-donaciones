@@ -89,6 +89,8 @@ pytest --cov=app --cov-report=term-missing --cov-report=html:reports/pytest/html
 
 Las pruebas usan una base SQLite aislada en memoria. Los resultados reales se registran en `RESULTADOS_PARA_INFORME.md` después de cada ejecución.
 
+La ejecución local verificada el 24 de septiembre de 2026 completó 12 de 12 pruebas y obtuvo 97.36 % de cobertura global.
+
 ## Docker
 
 En Windows utiliza Docker Desktop con el backend WSL 2 y contenedores Linux.
@@ -110,7 +112,9 @@ Verifica la aplicación en [http://localhost:8000/docs](http://localhost:8000/do
 
 ## SonarQube/SonarCloud
 
-El archivo `sonar-project.properties` apunta a `reports/pytest/coverage.xml`. Para SonarCloud configura `SONAR_TOKEN` y `SONAR_HOST_URL` como secretos de GitHub y ajusta `sonar.projectKey`/organización según tu cuenta. Para SonarQube local, ejecuta `sonar-scanner` después de Pytest con cobertura. No se incluyen métricas hasta realizar un análisis real.
+El archivo `sonar-project.properties` apunta a `reports/pytest/coverage.xml`; `.coveragerc` usa rutas relativas para que el informe sea compatible con el escáner en contenedor. Para SonarCloud configura `SONAR_TOKEN` y `SONAR_HOST_URL` como secretos de GitHub y ajusta `sonar.projectKey`/organización según tu cuenta. Para SonarQube local, ejecuta `sonar-scanner` después de Pytest con cobertura.
+
+El análisis local verificado con SonarQube Community Build 26.9.0.129388 registró 0 bugs, 0 vulnerabilidades, 0 security hotspots, 0 code smells, 97.4 % de cobertura y 0.0 % de líneas duplicadas. Las respuestas de la API se conservan en `reports/sonar/`.
 
 ## OWASP ZAP
 
@@ -122,7 +126,7 @@ bash scripts/run_zap.sh http://localhost:8000
 
 En PowerShell puedes usar `.scriptsun_zap.ps1 http://host.docker.internal:8000`.
 
-El script usa ZAP API Scan contra `/openapi.json` y guarda `reports/zap/zap-report.html` y `reports/zap/zap-report.json`. Revisa alertas, corrige lo procedente y vuelve a ejecutar el escaneo antes de completar el informe.
+El script usa ZAP API Scan contra `/openapi.json` y guarda sus informes HTML/JSON. La ejecución inicial registró dos tipos de alerta Low: faltaban `X-Content-Type-Options` y `Cross-Origin-Resource-Policy`. La API ahora establece `nosniff` y `same-origin` respectivamente; el reescaneo final registró 0 High, 0 Medium y 0 Low. Los informes comparativos están en `reports/zap/initial/` y `reports/zap/final/`.
 
 ## Staging y despliegue
 

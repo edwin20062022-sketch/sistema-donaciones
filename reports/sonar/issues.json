@@ -1,0 +1,407 @@
+{
+  "total": 7,
+  "p": 1,
+  "ps": 500,
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 500,
+    "total": 7
+  },
+  "effortTotal": 17,
+  "issues": [
+    {
+      "key": "4f9ea386-e476-4ae4-9dbc-36d43fdfe1ed",
+      "rule": "python:S8409",
+      "severity": "MINOR",
+      "component": "sistema-donaciones:app/routers/auth.py",
+      "project": "sistema-donaciones",
+      "hash": "dc4b0e1cc70377ff66b2655a2fe597e4",
+      "textRange": {
+        "startLine": 32,
+        "endLine": 32,
+        "startOffset": 23,
+        "endOffset": 51
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Remove this redundant \"response_model\" parameter; it duplicates the return type annotation.",
+      "effort": "2min",
+      "debt": "2min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "fastapi",
+        "api",
+        "redundant"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "8a8c891a-a4d2-4817-9b05-4c1ffae384d1",
+      "rule": "python:S1192",
+      "severity": "CRITICAL",
+      "component": "sistema-donaciones:app/routers/donantes.py",
+      "project": "sistema-donaciones",
+      "hash": "1ad5b7ce1dd3cfa3624182b81ab4cabc",
+      "textRange": {
+        "startLine": 45,
+        "endLine": 45,
+        "startOffset": 74,
+        "endOffset": 97
+      },
+      "flows": [
+        {
+          "locations": [
+            {
+              "component": "sistema-donaciones:app/routers/donantes.py",
+              "textRange": {
+                "startLine": 58,
+                "endLine": 58,
+                "startOffset": 74,
+                "endOffset": 97
+              },
+              "msg": "Duplication",
+              "msgFormattings": []
+            }
+          ]
+        },
+        {
+          "locations": [
+            {
+              "component": "sistema-donaciones:app/routers/donantes.py",
+              "textRange": {
+                "startLine": 74,
+                "endLine": 74,
+                "startOffset": 74,
+                "endOffset": 97
+              },
+              "msg": "Duplication",
+              "msgFormattings": []
+            }
+          ]
+        }
+      ],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Define a constant instead of duplicating this literal \"Donante no encontrado\" 3 times.",
+      "effort": "6min",
+      "debt": "6min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "design"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "DISTINCT",
+      "cleanCodeAttributeCategory": "ADAPTABLE",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "35795d09-df49-4bc6-8460-77955be3166c",
+      "rule": "python:S9083",
+      "severity": "MINOR",
+      "component": "sistema-donaciones:tests/conftest.py",
+      "project": "sistema-donaciones",
+      "hash": "d36ec1116f305c324920f330aba8e3c5",
+      "textRange": {
+        "startLine": 37,
+        "endLine": 37,
+        "startOffset": 15,
+        "endOffset": 17
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Remove empty parentheses from this decorator.",
+      "effort": "1min",
+      "debt": "1min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "tests",
+        "pytest"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "b41721c7-0051-4a3d-938f-5e41e4b5b422",
+      "rule": "python:S9083",
+      "severity": "MINOR",
+      "component": "sistema-donaciones:tests/conftest.py",
+      "project": "sistema-donaciones",
+      "hash": "d36ec1116f305c324920f330aba8e3c5",
+      "textRange": {
+        "startLine": 44,
+        "endLine": 44,
+        "startOffset": 15,
+        "endOffset": 17
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Remove empty parentheses from this decorator.",
+      "effort": "1min",
+      "debt": "1min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "tests",
+        "pytest"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "c6f3bff2-52cf-4dbe-9dd8-4d9192f51150",
+      "rule": "python:S9083",
+      "severity": "MINOR",
+      "component": "sistema-donaciones:tests/conftest.py",
+      "project": "sistema-donaciones",
+      "hash": "d36ec1116f305c324920f330aba8e3c5",
+      "textRange": {
+        "startLine": 13,
+        "endLine": 13,
+        "startOffset": 15,
+        "endOffset": 17
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Remove empty parentheses from this decorator.",
+      "effort": "1min",
+      "debt": "1min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "tests",
+        "pytest"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "f8e17a66-9c65-45f0-9247-fe12dbab0336",
+      "rule": "python:S9083",
+      "severity": "MINOR",
+      "component": "sistema-donaciones:tests/conftest.py",
+      "project": "sistema-donaciones",
+      "hash": "d36ec1116f305c324920f330aba8e3c5",
+      "textRange": {
+        "startLine": 57,
+        "endLine": 57,
+        "startOffset": 15,
+        "endOffset": 17
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Remove empty parentheses from this decorator.",
+      "effort": "1min",
+      "debt": "1min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "tests",
+        "pytest"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "13c44278-b741-4952-b7b2-45d48d58b515",
+      "rule": "python:S9073",
+      "severity": "MAJOR",
+      "component": "sistema-donaciones:tests/test_donantes.py",
+      "project": "sistema-donaciones",
+      "hash": "882f40d12cbc4f2772a5b9bea1a5900c",
+      "textRange": {
+        "startLine": 12,
+        "endLine": 12,
+        "startOffset": 4,
+        "endOffset": 64
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Split this composite assertion into separate assertions.",
+      "effort": "5min",
+      "debt": "5min",
+      "author": "edwin2006.2022@gmail.com",
+      "tags": [
+        "pytest"
+      ],
+      "creationDate": "2026-09-24T20:29:23-06:00",
+      "updateDate": "2026-09-24T22:01:32-06:00",
+      "closeDate": "2026-09-24T22:01:32-06:00",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    }
+  ],
+  "components": [
+    {
+      "key": "sistema-donaciones:app/routers/donantes.py",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "donantes.py",
+      "longName": "app/routers/donantes.py",
+      "path": "app/routers/donantes.py"
+    },
+    {
+      "key": "sistema-donaciones:app/routers/auth.py",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "auth.py",
+      "longName": "app/routers/auth.py",
+      "path": "app/routers/auth.py"
+    },
+    {
+      "key": "sistema-donaciones:tests/test_donantes.py",
+      "enabled": true,
+      "qualifier": "UTS",
+      "name": "test_donantes.py",
+      "longName": "tests/test_donantes.py",
+      "path": "tests/test_donantes.py"
+    },
+    {
+      "key": "sistema-donaciones:tests/conftest.py",
+      "enabled": true,
+      "qualifier": "UTS",
+      "name": "conftest.py",
+      "longName": "tests/conftest.py",
+      "path": "tests/conftest.py"
+    },
+    {
+      "key": "sistema-donaciones",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "Sistema de Gestion de Donaciones",
+      "longName": "Sistema de Gestion de Donaciones"
+    }
+  ],
+  "facets": []
+}

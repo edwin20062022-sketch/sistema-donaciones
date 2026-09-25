@@ -12,7 +12,5 @@ reports/pytest/htmlcov/
 reports/pytest/coverage.xml
 reports/zap/*.html
 reports/zap/*.json
-reports/sonar/*.json
 .idea/
 .vscode/
-
