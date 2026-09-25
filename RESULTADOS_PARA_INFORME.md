@@ -7,7 +7,7 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 * número de pruebas: 11
 * pruebas exitosas: 11
 * pruebas fallidas: 0
-* cobertura global real: 96.71 %
+* cobertura global real: 96.76 %
 * archivos con menor cobertura: `app/database.py` con 73 %; el resto de los módulos quedó por encima de 90 %.
 
 ## B. CI/CD

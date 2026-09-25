@@ -1,9 +1,18 @@
 """Punto de entrada de la API FastAPI."""
 
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 from .database import Base, engine
 from .routers import auth, donantes
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    Base.metadata.create_all(bind=engine)
+    yield
 
 
 def create_app() -> FastAPI:
@@ -11,11 +20,8 @@ def create_app() -> FastAPI:
         title="Sistema de Gestión de Donaciones",
         description="API académica para administrar usuarios y donantes de alimentos y recursos.",
         version="1.0.0",
+        lifespan=lifespan,
     )
-
-    @app.on_event("startup")
-    def create_tables() -> None:
-        Base.metadata.create_all(bind=engine)
 
     @app.get("/health", tags=["Sistema"])
     def health() -> dict[str, str]:
@@ -27,4 +33,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-
