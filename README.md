@@ -91,12 +91,18 @@ Las pruebas usan una base SQLite aislada en memoria. Los resultados reales se re
 
 ## Docker
 
+En Windows utiliza Docker Desktop con el backend WSL 2 y contenedores Linux.
+
 ```powershell
-docker build -t sistema-donaciones .
-docker run --rm -p 8000:8000 -e JWT_SECRET_KEY="secreto-local-largo" sistema-donaciones
+docker desktop start
+docker desktop engine use linux
+docker build -t sistema-donaciones:latest .
+docker run --rm -p 8000:8000 -e JWT_SECRET_KEY="secreto-local-largo" sistema-donaciones:latest
+docker ps
+docker logs <container_id_o_nombre>
 ```
 
-Para persistir la base de datos local, agrega `-v ${PWD}/data:/app/data` y usa `DATABASE_URL=sqlite:///./data/donaciones.db`.
+Verifica la aplicación en [http://localhost:8000/docs](http://localhost:8000/docs) y [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json). Para persistir la base de datos local, agrega `-v ${PWD}/data:/app/data` y usa `DATABASE_URL=sqlite:///./data/donaciones.db`.
 
 ## GitHub Actions
 

@@ -19,9 +19,23 @@ Este archivo concentra datos verificables para completar el Word adjunto. Las ci
 
 ## C. Docker
 
-* build exitoso: No disponible en este entorno; Docker Desktop no tenía iniciado el daemon Linux.
-* comando utilizado: `docker build -t sistema-donaciones .`
-* resultado: ejecución intentada; falló antes del build con `The system cannot find the file specified` al conectar con `dockerDesktopLinuxEngine`.
+* Docker Desktop instalado: sí, versión 4.59.0 (217644)
+* backend utilizado: Docker Desktop con contenedores Linux sobre WSL 2
+* versión WSL: 2.3.26.0; kernel 5.15.167.4-microsoft-standard-WSL2
+* `docker version`: cliente 29.2.0; Engine 29.2.0; servidor Docker Desktop 4.59.0; Linux/amd64
+* prueba `hello-world`: exitosa
+* build exitoso: sí
+* comando utilizado: `docker build -t sistema-donaciones:latest .`
+* imagen: `sistema-donaciones:latest`
+* tamaño de imagen: 66,037,597 bytes
+* container iniciado: sí
+* nombre del container: `sistema-donaciones`
+* puerto: `8000:8000`
+* `/health`: accesible, `200 OK`, cuerpo `{"status":"ok"}`
+* `/docs`: accesible, `200 OK`
+* `/openapi.json`: accesible, `200 OK`
+* errores encontrados: el daemon inicialmente no respondía; Docker Desktop fallaba al iniciar por sockets runtime corruptos y por el componente Model Runner/Inference.
+* correcciones realizadas: se regeneraron de forma reversible las carpetas runtime afectadas, se desactivó Model Runner con `docker desktop disable model-runner` y se reinició Docker Desktop con WSL 2.
 
 ## D. OWASP ZAP
 
