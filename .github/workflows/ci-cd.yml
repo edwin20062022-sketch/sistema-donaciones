@@ -1,0 +1,77 @@
+name: CI CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    name: Tests and coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - name: Run tests with coverage gate
+        run: pytest --cov=app --cov-report=term-missing --cov-report=html:reports/pytest/htmlcov --cov-report=xml:reports/pytest/coverage.xml --cov-fail-under=80
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pytest-reports
+          path: reports/pytest
+
+  build:
+    name: Docker build
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t sistema-donaciones:${{ github.sha }} .
+
+  quality:
+    name: Sonar quality analysis
+    needs: tests
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: pytest --cov=app --cov-report=xml:reports/pytest/coverage.xml
+      - uses: SonarSource/sonarqube-scan-action@v6
+        if: ${{ env.SONAR_TOKEN != '' && env.SONAR_HOST_URL != '' }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: Explain skipped Sonar analysis
+        if: ${{ env.SONAR_TOKEN == '' || env.SONAR_HOST_URL == '' }}
+        run: echo "Sonar analysis skipped because SONAR_TOKEN or SONAR_HOST_URL is not configured."
+
+  deploy-staging:
+    name: Deploy staging through Render hook
+    needs: [tests, build]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    env:
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+    steps:
+      - name: Trigger Render deploy hook
+        if: ${{ env.RENDER_DEPLOY_HOOK_URL != '' }}
+        run: curl --fail --silent --show-error -X POST "$RENDER_DEPLOY_HOOK_URL"
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      - name: Explain skipped staging deployment
+        if: ${{ env.RENDER_DEPLOY_HOOK_URL == '' }}
+        run: echo "Staging deployment skipped because RENDER_DEPLOY_HOOK_URL is not configured."

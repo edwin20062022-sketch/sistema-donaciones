@@ -1,0 +1,2 @@
+"""Rutas HTTP del sistema."""
+
