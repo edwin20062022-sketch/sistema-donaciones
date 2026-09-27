@@ -83,8 +83,8 @@ Este archivo es la fuente de verdad para el informe y la entrega. Los valores pr
 * Las variables privadas del despliegue deben permanecer en Render y GitHub Secrets; el Deploy Hook se validó sin versionar su URL.
 * El plan Free de Render puede entrar en reposo; `/health` permitió comprobar el servicio tras su reactivación.
 
-## J. Evidencias y limitaciones de captura
+## J. Evidencias visuales y reportes
 
-* disponibles: cobertura Pytest, reporte final ZAP, exportación de métricas Sonar y Swagger del staging en `evidencias/`.
+* disponibles: cobertura Pytest, reporte final ZAP, exportación de métricas Sonar, GitHub Actions y Swagger con respuesta `403` en `evidencias/`.
 * reportes completos: `reports/pytest/`, `reports/zap/` y `reports/sonar/`.
-* capturas visuales manuales pendientes: `CAPTURAS_PENDIENTES.md` documenta únicamente las que requieren una sesión autenticada de GitHub o SonarQube, o una interacción manual de Swagger.
+* la evidencia de GitHub Actions conserva los cuatro jobs exitosos; la de Swagger muestra la denegación por rol y la de SonarQube corresponde a la exportación verificable de sus métricas.

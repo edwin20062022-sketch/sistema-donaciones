@@ -140,4 +140,4 @@ Se comprobaron respuestas `200 OK` en [health](https://sistema-donaciones-pgju.o
 
 ## Evidencias y limitaciones
 
-`RESULTADOS_PARA_INFORME.md` es la fuente de verdad de los resultados finales. `AUDITORIA_FINAL.md` contrasta el resultado con la rúbrica y `CAPTURAS_PENDIENTES.md` indica únicamente las evidencias visuales que requieren una sesión autenticada o interacción manual. Las capturas reales disponibles se guardan en `evidencias/`, sin incluir credenciales.
+`RESULTADOS_PARA_INFORME.md` es la fuente de verdad de los resultados finales y `AUDITORIA_FINAL.md` contrasta el resultado con la rúbrica. Las evidencias visuales verificadas se guardan en `evidencias/`, sin incluir credenciales.
